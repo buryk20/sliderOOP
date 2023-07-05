@@ -79,4 +79,15 @@
         justify-content: center;
 
     }
+
+    &__img-wrp {
+        position: relative;
+    }
+
+    &__img-text {
+        position: absolute;
+
+        font-size: 60px;
+        color: aqua;
+    }
 }

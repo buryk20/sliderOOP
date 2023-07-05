@@ -9,41 +9,50 @@ export let SliderBr = class {
         this.imgArr = this.getHtmlElemArr(imgArr);
     }
 
-    sliderMove() {
-        this.getClickNext();
-        this.getClickPrev();
-        this.moveImg();
+    test() {
+        console.log(this.counter);
     }
 
-    moveImg() {
+    sliderMove() {
+        this.getClickNext(this.counter);
+        this.getClickPrev(this.counter);
+        this.moveImg(this.counter);
+        console.log(this.imgArr);
+    }
+
+    moveImg(counter) {
         this.isClicked = false;
         this.positionX;
-        this.wrpSlider.addEventListener('mousedown', (event) => {
+        this.imgArr[counter].addEventListener('mousedown', (event) => {
+            console.log(this.isClicked);
+            console.log(this.counter);
             this.isClicked = true;
             this.positionX = event.clientX;
             console.log(this.isClicked);
-
         });
-        console.log(this.isClicked);
 
-        this.wrpSlider.addEventListener('mousemove', (event) =>  {
+        this.imgArr[counter].addEventListener('mousemove', (event) =>  {
+            console.log(this.isClicked);
             if(this.isClicked) {
-                if(this.counter === 0 || this.counter === 1) {
-                    this.counter = 1;
-                    console.log(this.counter);
-                    window.getComputedStyle(this.wrpSlider).getPropertyValue('--counter-import-slider');
-                    this.wrpSlider.style.setProperty('--counter-import-slider', -((this.positionX - event.clientX)) + 'px');
-                }
+                console.log(this.positionX, 'positionX');
+                console.log(event.clientX, "event.clientX");
+                window.getComputedStyle(this.wrpSlider).getPropertyValue('--counter-import-slider');
+                this.wrpSlider.style.setProperty('--counter-import-slider', -((this.positionX - event.clientX)) + 'px');
             }
         });
 
-        window.addEventListener('mouseup', (event) => {
-
+        window.addEventListener('mouseup',  (event) => {
+            // console.log(this.isClicked);
              this.isClicked = false;
              if(this.positionX - event.clientX) {
-                 this.counter = this.counter + 1;
-                 this.actualTransition(this.counter);
+                 if(counter < (this.imgArr.length - 1)) {
+                    counter = counter + 1;
+                    this.actualTransition(counter);
+                 }
              }
+             this.positionX = event.clientX;
+            //  console.log(this.counter);
+            //  console.log(event.clientX);
         })
     }
 
@@ -55,22 +64,28 @@ export let SliderBr = class {
         return document.querySelectorAll(arr);
     }
 
-    getClickNext() {
-        this.btnNext.addEventListener('click', () => {
-            if(this.counter < (this.imgArr.length - 1)) {
-                this.actualTransition(this.counter = this.counter + 1);
-                return this.counter;
-            }
-        });
+    getClickNext(counter) {
+            this.btnNext.addEventListener('click', (() => {
+                this.test();
+                if(counter < (this.imgArr.length - 1)) {
+                    this.actualTransition(counter = counter + 1);
+                }
+                this.moveImg(counter);
+            }).bind(this));
+        return counter;
     }
 
-    getClickPrev() {
-        this.btnPrev.addEventListener('click', () => {
-            if(this.counter >= 0) {
-                this.actualTransition(this.counter -= 1);
-                return this.counter;
+    // nextSlide(counter) {
+
+    // }
+
+    getClickPrev(counter) {
+        this.btnPrev.addEventListener('click', (() => {
+            if(this.counter > 0) {
+                this.actualTransition(counter -= 1);
+                return counter;
             }
-        });
+        }).bind(this));
     }
 
     actualTransition(counter) {

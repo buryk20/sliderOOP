@@ -85,4 +85,14 @@
       -ms-flex-pack: center;
           justify-content: center;
 }
+
+.slider__img-wrp {
+  position: relative;
+}
+
+.slider__img-text {
+  position: absolute;
+  font-size: 60px;
+  color: aqua;
+}
 /*# sourceMappingURL=main.css.map */
